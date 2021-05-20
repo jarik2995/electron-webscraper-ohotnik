@@ -1,0 +1,25 @@
+{
+  "name": "my-webscrapper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^12.0.7"
+  },
+  "dependencies": {
+    "electron-context-menu": "^3.1.0",
+    "electron-debug": "^3.2.0",
+    "file-saver": "^2.0.5",
+    "html-to-text": "^7.1.1",
+    "jsdom": "^16.5.3",
+    "mdb-ui-kit": "^3.5.1",
+    "simple-crypto-js": "^3.0.0",
+    "url": "^0.11.0"
+  }
+}
