@@ -1,30 +1,12 @@
-
-// Основной файл приложения на основе Javascript библиотеки Electron
-
-//  Загружаем библиотеки
-// Electron для создагия кросплатформеного приложения
-// Url и Path помогает нам указывать путь к файлам
-// SimpleCrypto используем для шифрования данных при сохранинии в файл
 const electron = require('electron');
 const format = require('url').format;
 const join = require('path').join;
-// const SimpleCrypto = require('simple-crypto-js');
-// var _secretKey = "some-unique-key";
-// var simplecrypto = new SimpleCrypto(_secretKey);
 const fs = require('fs')
 const {app, BrowserWindow, Menu, ipcMain, dialog} = electron;
-// const jsdom = require("jsdom");
-// const { JSDOM } = jsdom;
-const debug = require('electron-debug');
+// const debug = require('electron-debug');
 
-// debug();
+//  debug();
 //let mainWindow;
-
-
-// Оснавная функция вызывающаяся при запуске приложения
-// Открывает окно размером 1200 на 740 пикселей, и загружает в него контент из файла mainWindow.html
-// preload.js используется для передачи данных между окнами, так доступ из одного окна в другое напрямую запрещен.
-
 
 
 app.on('ready', function(){
@@ -34,7 +16,9 @@ app.on('ready', function(){
 		height: height,
 		webPreferences: {
 			nodeIntegration: true,
-			contextIsolation: false
+			contextIsolation: false,
+			enableRemoteModule: true,
+			preload: join(__dirname, 'preload.js')
 		}
 	});
 	mainWindow.loadURL(format({

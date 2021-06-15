@@ -45,21 +45,22 @@ function convertHTMLToText(html) {
         'img': { format: 'skip' },
         'p': { options: { leadingLineBreaks: 2, trailingLineBreaks: 2, trimEmptyLines: true } },
         'pre': { options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },
-        'table': { options: { maxColumnWidth: 10000, leadingLineBreaks: 2, trailingLineBreaks: 2} }
+        'table': { options: { maxColumnWidth: 10000, leadingLineBreaks: 2, trailingLineBreaks: 2} },
+        'li': { format: 'block'}
       }
     })
     .replace(/^\s+\n/gm,'\n').replace(/^\s\s+/gm,' ').replace(/\s{5,}/gm,': ').replace(/ {3,}/gm,', ')
   }
 
 async function getItemLink(id, item, site) {
-    const response = await fetch(site['url'] + site['search'].replace(/ITEM/g,item));
+    const response = await fetch(site['proxy'] + site['url'] + site['search'].replace(/ITEM/g,item)); 
     const text = await response.text();
     const dom = await new JSDOM(text);
-    const foundItem = dom.window.document.querySelector('div.catalog_item div.item-title a');
+    const foundItem = dom.window.document.querySelector(site['itemLinkSelector']);
     var link = null
     var found = false;
     if (foundItem) {
-      link = foundItem.getAttribute('href');
+      link = foundItem.getAttribute(site['itemLinkAttribute']);
       found = true;
     }
     return {
@@ -73,11 +74,11 @@ async function getItemLink(id, item, site) {
 
 async function getItemDetail(item, site) {
     if (item['found']) {
-      const response = await fetch(site['url'] + item['link']);
+      const response = await fetch(site['proxy'] + site['url'] + item['link']);
       const text = await response.text();
       const dom = await new JSDOM(text);
-      const image = dom.window.document.querySelector('div.item_main_info a img').getAttribute('src');
-      const itext = dom.window.document.querySelector('div.detail_text');
+      const image = dom.window.document.querySelector(site['itemImageSelector']).getAttribute(site['itemImageAttribute']);
+      const itext = dom.window.document.querySelector(site['itemContentSelector']);
       item['image']=image;
       item['text']=convertHTMLToText(itext);
     }
